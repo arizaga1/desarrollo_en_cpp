@@ -54,18 +54,26 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     static HWND hEdit1; 
 	static HWND hEdit2;
-   
+   	static HWND hLabel;
 
     switch (msg)
     {
     case WM_CREATE:
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Etiqueta1:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 10, 100, 20,
+    	hwnd, NULL, NULL, NULL);
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Etiqueta2:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 50, 100, 20,
+    	hwnd, NULL, NULL, NULL);
         hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 10, 100, 20,
+            10, 30, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         hEdit2  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 40, 100, 20,
+            10, 70, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         CreateWindow(TEXT("button"), TEXT("OK"), WS_VISIBLE | WS_CHILD,
             120, 10, 80, 25, hwnd, (HMENU)2, NULL, NULL);
