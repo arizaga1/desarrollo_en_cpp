@@ -1,6 +1,7 @@
 #include <iostream>
 #include <windows.h>
 
+    static int number =0;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int main()
@@ -15,7 +16,8 @@ int main()
     wc.style = CS_HREDRAW | CS_VREDRAW;
 
     RegisterClass(&wc);
-
+while (true)
+    {
     hwnd = CreateWindow(
         TEXT("MyDialogClass"),
         TEXT("My Dialog"),
@@ -29,26 +31,35 @@ int main()
         GetModuleHandle(NULL),
         NULL
     );
+           while (GetMessage(&msg, NULL, 0, 0))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+	std::cout << "Number: " << number << std::endl;
+    
+        if (number == 100)
+            break;
 
-    while (GetMessage(&msg, NULL, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
+        // Resto del código del bucle principal
+        // ...
 
+        // Ejemplo: Mostrar el valor actual de 'number'
+       } 
+	
     return (int)msg.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     static HWND hEdit;
-    static int number;
+   
 
     switch (msg)
     {
     case WM_CREATE:
         hEdit = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
-            WS_CHILD | WS_VISIBLE | ES_NUMBER,
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 10, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         CreateWindow(TEXT("button"), TEXT("OK"), WS_VISIBLE | WS_CHILD,
@@ -61,8 +72,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             TCHAR buffer[256];
             GetWindowText(hEdit, buffer, sizeof(buffer));
             number = atoi(buffer);
-            MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
-            MessageBox(hwnd, buffer, TEXT("Number entered"), MB_OK);
+            //MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
+            //MessageBox(hwnd, buffer, TEXT("Number entered"), MB_OK);
+            DestroyWindow(hwnd);
            // MessageBox(hwnd, std::to_string(number), TEXT("Number as integer"), MB_OK);
         }
         break;
