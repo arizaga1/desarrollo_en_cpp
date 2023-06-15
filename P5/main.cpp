@@ -59,22 +59,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	static HWND hEdit5;
 	static HWND hEdit6;
 	static HWND hEdit7;
-
-   	static HWND hLabel;
-
-
+	  
 
     switch (msg)
     {
     case WM_CREATE:
-    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Etiqueta1:"),
-    	WS_VISIBLE | WS_CHILD,
-    	10, 10, 100, 20,
-    	hwnd, NULL, NULL, NULL);
-    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Etiqueta2:"),
-    	WS_VISIBLE | WS_CHILD,
-    	10, 50, 100, 20,
-    	hwnd, NULL, NULL, NULL);
         hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 30, 100, 20,
