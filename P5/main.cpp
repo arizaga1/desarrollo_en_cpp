@@ -36,7 +36,7 @@ while (true)
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-	std::cout << "Number: " << number << std::endl;
+	
     
         if (number == 100)
             break;
@@ -52,15 +52,20 @@ while (true)
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    static HWND hEdit;
+    static HWND hEdit1; 
+	static HWND hEdit2;
    
 
     switch (msg)
     {
     case WM_CREATE:
-        hEdit = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+        hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 10, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
+        hEdit2  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
+            10, 40, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         CreateWindow(TEXT("button"), TEXT("OK"), WS_VISIBLE | WS_CHILD,
             120, 10, 80, 25, hwnd, (HMENU)2, NULL, NULL);
@@ -70,8 +75,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         if (LOWORD(wParam) == 2)
         {
             TCHAR buffer[256];
-            GetWindowText(hEdit, buffer, sizeof(buffer));
+            GetWindowText(hEdit1, buffer, sizeof(buffer));
             number = atoi(buffer);
+            std::cout << "Number1: " << number << std::endl;
+            GetWindowText(hEdit2, buffer, sizeof(buffer));
+            number = atoi(buffer);
+            std::cout << "Number2: " << number << std::endl;
             //MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
             //MessageBox(hwnd, buffer, TEXT("Number entered"), MB_OK);
             DestroyWindow(hwnd);
