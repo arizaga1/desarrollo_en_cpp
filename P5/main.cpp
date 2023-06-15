@@ -25,7 +25,7 @@ while (true)
         100,
         100,
         300,
-        200,
+        500,
         NULL,
         NULL,
         GetModuleHandle(NULL),
@@ -54,19 +54,44 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     static HWND hEdit1; 
 	static HWND hEdit2;
-   
+    static HWND hEdit3; 
+	static HWND hEdit4;
+	static HWND hEdit5;
+	static HWND hEdit6;
+	static HWND hEdit7;
+	  
 
     switch (msg)
     {
     case WM_CREATE:
         hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 10, 100, 20,
+            10, 30, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         hEdit2  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 40, 100, 20,
+            10, 60, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
+        hEdit3  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
+            10, 90, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
+        hEdit4  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
+            10, 100, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
+        hEdit5  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
+            10, 130, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);  
+		hEdit6  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
+            10, 70, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL); 
+		hEdit7  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
+            10, 70, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);	 
         CreateWindow(TEXT("button"), TEXT("OK"), WS_VISIBLE | WS_CHILD,
             120, 10, 80, 25, hwnd, (HMENU)2, NULL, NULL);
         break;
@@ -81,6 +106,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             GetWindowText(hEdit2, buffer, sizeof(buffer));
             number = atoi(buffer);
             std::cout << "Number2: " << number << std::endl;
+             GetWindowText(hEdit3, buffer, sizeof(buffer));
+            number = atoi(buffer);
+            std::cout << "Number3: " << number << std::endl;
             //MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
             //MessageBox(hwnd, buffer, TEXT("Number entered"), MB_OK);
             DestroyWindow(hwnd);
