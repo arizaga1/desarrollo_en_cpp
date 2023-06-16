@@ -20,11 +20,11 @@ while (true)
     {
     hwnd = CreateWindow(
         TEXT("MyDialogClass"),
-        TEXT("My Dialog"),
+        TEXT("DATOS ESTADO DE RESULTADOS"),
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         100,
         100,
-        300,
+        500,
         500,
         NULL,
         NULL,
@@ -38,7 +38,7 @@ while (true)
         }
 	
     
-        if (number == 100)
+       // if (number == 100)
             break;
 
         // Resto del código del bucle principal
@@ -67,44 +67,65 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (msg)
     {
     case WM_CREATE:
-    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Etiqueta1:"),
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese las Ventas:"),
     	WS_VISIBLE | WS_CHILD,
-    	10, 10, 100, 20,
+    	10, 10, 300, 20,
     	hwnd, NULL, NULL, NULL);
-    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Etiqueta2:"),
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese el Costo de Ventas:"),
     	WS_VISIBLE | WS_CHILD,
-    	10, 50, 100, 20,
+    	10, 50, 300, 20,
+    	  	hwnd, NULL, NULL, NULL);
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese los Gastos de Administración:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 90, 300, 20,
     	hwnd, NULL, NULL, NULL);
-        hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese los Gastos de Venta:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 130, 300, 20,
+    	  	hwnd, NULL, NULL, NULL);
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese los Ingresos Financieros:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 170, 300, 20,
+    	  	hwnd, NULL, NULL, NULL);
+        hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese los Gastos Financieros :"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 210, 300, 20,
+    	  	hwnd, NULL, NULL, NULL);
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese los Impuestos:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 250, 300, 20,
+    	  	hwnd, NULL, NULL, NULL);
+		hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 30, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         hEdit2  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 60, 100, 20,
+            10, 70, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         hEdit3  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 90, 100, 20,
+            10, 110, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         hEdit4  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 100, 100, 20,
+            10, 150, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
         hEdit5  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 130, 100, 20,
+            10, 190, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);  
 		hEdit6  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 70, 100, 20,
+            10, 230, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL); 
 		hEdit7  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
-            10, 70, 100, 20,
+            10, 270, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);	 
-        CreateWindow(TEXT("button"), TEXT("OK"), WS_VISIBLE | WS_CHILD,
-            120, 10, 80, 25, hwnd, (HMENU)2, NULL, NULL);
+        CreateWindow(TEXT("button"), TEXT("GUARDAR DATOS"), WS_VISIBLE | WS_CHILD,
+            320, 10, 150, 25, hwnd, (HMENU)2, NULL, NULL);
+           
         break;
 
     case WM_COMMAND:
@@ -120,8 +141,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
              GetWindowText(hEdit3, buffer, sizeof(buffer));
             number = atoi(buffer);
             std::cout << "Number3: " << number << std::endl;
+             GetWindowText(hEdit4, buffer, sizeof(buffer));
+            number = atoi(buffer);
+            std::cout << "Number4: " << number << std::endl;
+             GetWindowText(hEdit5, buffer, sizeof(buffer));
+            number = atoi(buffer);
+            std::cout << "Number5: " << number << std::endl;
+             GetWindowText(hEdit6, buffer, sizeof(buffer));
+            number = atoi(buffer);
+            std::cout << "Number6: " << number << std::endl;
+             GetWindowText(hEdit7, buffer, sizeof(buffer));
+            number = atoi(buffer);
+            std::cout << "Number7: " << number << std::endl;
             //MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
-            //MessageBox(hwnd, buffer, TEXT("Number entered"), MB_OK);
+            MessageBox(hwnd, 0, TEXT("Datos Registrados"), MB_OK);
             DestroyWindow(hwnd);
            // MessageBox(hwnd, std::to_string(number), TEXT("Number as integer"), MB_OK);
         }
