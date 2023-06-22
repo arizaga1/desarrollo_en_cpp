@@ -1,66 +1,146 @@
+#include <iostream>
 #include <windows.h>
 
-/* This is where all the input to the window goes to */
-LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) {
-	switch(Message) {
-		
-		/* Upon destruction, tell the main thread to stop */
-		case WM_DESTROY: {
-			PostQuitMessage(0);
-			break;
-		}
-		
-		/* All other messages (a lot of them) are processed using default procedures */
-		default:
-			return DefWindowProc(hwnd, Message, wParam, lParam);
-	}
-	return 0;
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+int main()
+{
+    HWND hwnd;
+    MSG msg;
+    WNDCLASS wc = {};
+
+    // Registrar la clase de la ventana
+    wc.lpfnWndProc = WindowProc;
+    wc.hInstance = GetModuleHandle(NULL);
+    wc.lpszClassName = TEXT("MyWindowClass");
+
+    if (!RegisterClass(&wc))
+    {
+        std::cout << "Error al registrar la clase de la ventana." << std::endl;
+        return 1;
+    }
+
+    // Crear la ventana principal
+    hwnd = CreateWindowEx(
+        0,
+        TEXT("MyWindowClass"),
+        TEXT("Ventana"),
+        WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, 400, 200,
+        NULL,
+        NULL,
+        GetModuleHandle(NULL),
+        NULL
+    );
+
+    if (hwnd == NULL)
+    {
+        std::cout << "Error al crear la ventana." << std::endl;
+        return 1;
+    }
+
+    // Mostrar la ventana
+    ShowWindow(hwnd, SW_SHOWDEFAULT);
+    UpdateWindow(hwnd);
+
+    // Bucle de mensajes de la ventana
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return 0;
 }
 
-/* The 'main' function of Win32 GUI programs: this is where execution starts */
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-	WNDCLASSEX wc; /* A properties struct of our window */
-	HWND hwnd; /* A 'HANDLE', hence the H, or a pointer to our window */
-	MSG msg; /* A temporary location for all messages */
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_CREATE:
+    {
+        // Crear el botón
+        HWND button = CreateWindow(
+           TEXT("BUTTON"),
+            TEXT("Click me !"),
+            WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+            10, 50, 100, 30,
+            hwnd,
+            NULL,
+            (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
+            NULL
+        );
 
-	/* zero out the struct and set the stuff we want to modify */
-	memset(&wc,0,sizeof(wc));
-	wc.cbSize		 = sizeof(WNDCLASSEX);
-	wc.lpfnWndProc	 = WndProc; /* This is where we will send messages to */
-	wc.hInstance	 = hInstance;
-	wc.hCursor		 = LoadCursor(NULL, IDC_ARROW);
-	
-	/* White, COLOR_WINDOW is just a #define for a system color, try Ctrl+Clicking it */
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
-	wc.lpszClassName = "WindowClass";
-	wc.hIcon		 = LoadIcon(NULL, IDI_APPLICATION); /* Load a standard icon */
-	wc.hIconSm		 = LoadIcon(NULL, IDI_APPLICATION); /* use the name "A" to use the project icon */
+        // Crear la etiqueta
+        HWND label = CreateWindow(
+            TEXT("STATIC"),
+            TEXT("Etiqueta"),
+            WS_VISIBLE | WS_CHILD,
+            10, 90, 100, 20,
+            hwnd,
+            NULL,
+            (HINSTANCE)GetWindowLongPtr(hwnd, GWLP_HINSTANCE),
+            NULL
+        );
+    }
+    break;
 
-	if(!RegisterClassEx(&wc)) {
-		MessageBox(NULL, "Window Registration Failed!","Error!",MB_ICONEXCLAMATION|MB_OK);
-		return 0;
-	}
+    case WM_COMMAND:
+        if (HIWORD(wParam) == BN_CLICKED) // Botón presionado
+        {
+            // Destruir la ventana principal
+           // DestroyWindow(hwnd);
 
-	hwnd = CreateWindowEx(WS_EX_CLIENTEDGE,"WindowClass","Caption",WS_VISIBLE|WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, /* x */
-		CW_USEDEFAULT, /* y */
-		640, /* width */
-		480, /* height */
-		NULL,NULL,hInstance,NULL);
+            // Crear una nueva ventana con la etiqueta "Hola mundo" y un botón de cerrar
+            HWND newHwnd = CreateWindowEx(
+                0,
+                TEXT("MyWindowClass"),
+                TEXT("Hola mundo"),
+                WS_OVERLAPPEDWINDOW,
+                CW_USEDEFAULT, CW_USEDEFAULT, 400, 200,
+                NULL,
+                NULL,
+                GetModuleHandle(NULL),
+                NULL
+            );
 
-	if(hwnd == NULL) {
-		MessageBox(NULL, "Window Creation Failed!","Error!",MB_ICONEXCLAMATION|MB_OK);
-		return 0;
-	}
+            HWND closeButton = CreateWindow(
+                TEXT("BUTTON"),
+                TEXT("Cerrar"),
+                WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                10, 50, 100, 30,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL
+            );
 
-	/*
-		This is the heart of our program where all input is processed and 
-		sent to WndProc. Note that GetMessage blocks code flow until it receives something, so
-		this loop will not produce unreasonably high CPU usage
-	*/
-	while(GetMessage(&msg, NULL, 0, 0) > 0) { /* If no error is received... */
-		TranslateMessage(&msg); /* Translate key codes to chars if present */
-		DispatchMessage(&msg); /* Send it to WndProc */
-	}
-	return msg.wParam;
+            HWND newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("Hola mundo"),
+                WS_VISIBLE | WS_CHILD,
+                10, 90, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL
+            );
+
+            // Mostrar la nueva ventana
+            ShowWindow(newHwnd, SW_SHOWDEFAULT);
+            ShowWindow(hwnd, SW_HIDE);
+			UpdateWindow(newHwnd);
+        }
+        break;
+
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+
+    default:
+        return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+
+    return 0;
 }
+
