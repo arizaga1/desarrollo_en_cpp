@@ -1,7 +1,19 @@
 #include <iostream>
 #include <windows.h>
 
-    static int number =0;
+    static float ventas =0;
+    static float costodventas =0;
+   	//static float utilidadmarginal =0;
+    static float gastosdeadministracion =0;
+    static float gastos_ventas =0;
+    //static float gastosdeoperacion =0;
+	//static float utlidadperdida_desp_operaciones =0;
+    static float ingresosfinancieros =0;
+    static float gastosfinancieros =0;
+  	//static float resultado_int_financiamiento =0;
+    //static float utilidad_antes_impuestos =0;
+    static float impuestos =0;
+    static float utilidad_desp_impuestos =0;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int main()
