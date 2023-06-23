@@ -2,10 +2,10 @@
 #include <windows.h>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
+HWND hwnd1,newHwnd;
 int main()
 {
-    HWND hwnd;
+    
     MSG msg;
     WNDCLASS wc = {};
 
@@ -21,8 +21,7 @@ int main()
     }
 
     // Crear la ventana principal
-    hwnd = CreateWindowEx(
-        0,
+    hwnd1 = CreateWindow(
         TEXT("MyWindowClass"),
         TEXT("Ventana"),
         WS_OVERLAPPEDWINDOW,
@@ -33,15 +32,15 @@ int main()
         NULL
     );
 
-    if (hwnd == NULL)
+    if (hwnd1 == NULL)
     {
         std::cout << "Error al crear la ventana." << std::endl;
         return 1;
     }
 
     // Mostrar la ventana
-    ShowWindow(hwnd, SW_SHOWDEFAULT);
-    UpdateWindow(hwnd);
+    ShowWindow(hwnd1, SW_SHOWDEFAULT);
+    UpdateWindow(hwnd1);
 
     // Bucle de mensajes de la ventana
     while (GetMessage(&msg, NULL, 0, 0))
@@ -86,14 +85,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     break;
 
     case WM_COMMAND:
-        if (HIWORD(wParam) == BN_CLICKED) // Botón presionado
+
+    	if (HIWORD(wParam) == BN_CLICKED) // Botón presionado
         {
-            // Destruir la ventana principal
+    	if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("Ventana")))
+		{            // Destruir la ventana principal
            // DestroyWindow(hwnd);
 
             // Crear una nueva ventana con la etiqueta "Hola mundo" y un botón de cerrar
-            HWND newHwnd = CreateWindowEx(
-                0,
+             newHwnd = CreateWindow(
                 TEXT("MyWindowClass"),
                 TEXT("Hola mundo"),
                 WS_OVERLAPPEDWINDOW,
@@ -129,7 +129,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // Mostrar la nueva ventana
             ShowWindow(newHwnd, SW_SHOWDEFAULT);
             ShowWindow(hwnd, SW_HIDE);
+            
 			UpdateWindow(newHwnd);
+	
+		}
+		if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("Hola mundo")))
+		{
+			DestroyWindow(hwnd);DestroyWindow(hwnd1);
+		}
         }
         break;
 
