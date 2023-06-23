@@ -170,7 +170,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             ShowWindow(hwnd, SW_HIDE);
 
             // Crear una nueva ventana con la etiqueta "Hola mundo" y un botón de cerrar
-             newhwnd = CreateWindow(
+             hwnd2 = CreateWindow(
                 TEXT("MyWindowClass"),
                 TEXT("Hola mundo"),
                 WS_OVERLAPPEDWINDOW,
