@@ -18,7 +18,7 @@ HWND hwnd1,newHwnd;
     static float utilidad_desp_impuestos =0;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc_resultados(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-HWND hwnd, resultWindow;
+HWND hwnd, resultWindow, newhwnd;
 int main()
 {
     
@@ -86,6 +86,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     
     {
         // Crear el botón
+       if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("Ventana")))
+		{ 
         HWND button = CreateWindow(
            TEXT("BUTTON"),
             TEXT("GUARDAR DATOS"),
@@ -155,7 +157,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 270, 100, 20,
             hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);	 
-    
+    	}
     
 	}
     break;
@@ -170,22 +172,50 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             ShowWindow(hwnd, SW_HIDE);
 
             // Crear una nueva ventana con la etiqueta "Hola mundo" y un botón de cerrar
-             newhwnd = CreateWindow(
+             newHwnd = CreateWindow(
                 TEXT("MyWindowClass"),
-                TEXT("Hola mundo"),
+                TEXT("ESTADO DE RESULTADOS"),
                 WS_OVERLAPPEDWINDOW,
-                CW_USEDEFAULT, CW_USEDEFAULT, 400, 200,
+                CW_USEDEFAULT, CW_USEDEFAULT, 500, 500,
                 NULL,
                 NULL,
                 GetModuleHandle(NULL),
                 NULL
             );
-
+            
+             {
+            TCHAR buffer[256];
+            GetWindowText(hEdit1, buffer, sizeof(buffer));
+            ventas = atof(buffer);
+            std::cout << "Number1: " << ventas << std::endl;
+            GetWindowText(hEdit2, buffer, sizeof(buffer));
+            costodventas = atof(buffer);
+            std::cout << "Number2: " << costodventas << std::endl;
+             GetWindowText(hEdit3, buffer, sizeof(buffer));
+            gastosdeadministracion = atof(buffer);
+            std::cout << "Number3: " << gastosdeadministracion << std::endl;
+             GetWindowText(hEdit4, buffer, sizeof(buffer));
+            gastos_ventas = atof(buffer);
+            std::cout << "Number4: " << gastos_ventas << std::endl;
+             GetWindowText(hEdit5, buffer, sizeof(buffer));
+            ingresosfinancieros = atof(buffer);
+            std::cout << "Number5: " << ingresosfinancieros << std::endl;
+             GetWindowText(hEdit6, buffer, sizeof(buffer));
+            gastosfinancieros = atof(buffer);
+            std::cout << "Number6: " << gastosfinancieros << std::endl;
+             GetWindowText(hEdit7, buffer, sizeof(buffer));
+            impuestos = atof(buffer);
+            std::cout << "Number7: " << impuestos << std::endl;
+            //MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
+            MessageBox(hwnd, 0, TEXT("Datos Registrados"), MB_OK);
+            
+            }
+			
             HWND closeButton = CreateWindow(
                 TEXT("BUTTON"),
                 TEXT("Cerrar"),
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-                10, 50, 100, 30,
+                10, 300, 100, 30,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
@@ -194,15 +224,52 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             HWND newLabel = CreateWindow(
                 TEXT("STATIC"),
-                TEXT("Hola mundo"),
+                TEXT("ESTADO DE RESULTADOS INTEGRAL"),
                 WS_VISIBLE | WS_CHILD,
-                10, 90, 100, 20,
+                70, 20, 250, 20,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
                 NULL
             );
-
+            newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("MIRJAM JAZMIN REYES DIAZ"),
+                WS_VISIBLE | WS_CHILD,
+                80, 45, 230, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );
+			newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("01 de enero al 31 de enero de 2023"),
+                WS_VISIBLE | WS_CHILD,
+                70, 70, 250, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );
+            newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("VENTAS. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 100, 210, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+			newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT(std::basic_string(ventas)),
+                WS_VISIBLE | WS_CHILD,
+                230, 100, 50, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );	 
+                
+                
             // Mostrar la nueva ventana
             ShowWindow(newHwnd, SW_SHOWDEFAULT);
             ShowWindow(hwnd, SW_HIDE);

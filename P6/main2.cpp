@@ -18,7 +18,7 @@ HWND hwnd1,newHwnd;
     static float utilidad_desp_impuestos =0;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc_resultados(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-HWND hwnd, resultWindow;
+HWND hwnd, resultWindow, hwnd2;
 int main()
 {
     
