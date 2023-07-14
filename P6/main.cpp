@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h>
+#include <string>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 HWND hwnd1,newHwnd;
@@ -259,17 +260,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
                 NULL );   
+                char buffer[20];
+    			sprintf(buffer, " %.2f", ventas);
 			newLabel = CreateWindow(
                 TEXT("STATIC"),
-                TEXT(std::basic_string(ventas)),
+                buffer,
                 WS_VISIBLE | WS_CHILD,
-                230, 100, 50, 20,
+                230, 100, 100, 20,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
-                NULL );	 
-                
-                
+               NULL );	 
+               
+				 
             // Mostrar la nueva ventana
             ShowWindow(newHwnd, SW_SHOWDEFAULT);
             ShowWindow(hwnd, SW_HIDE);
