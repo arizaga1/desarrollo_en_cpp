@@ -6,15 +6,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 HWND hwnd1,newHwnd;
  static float ventas =0;
     static float costodventas =0;
-   	//static float utilidadmarginal =0;
+   	static float utilidadmarginal =0;
     static float gastosdeadministracion =0;
     static float gastos_ventas =0;
-    //static float gastosdeoperacion =0;
-	//static float utlidadperdida_desp_operaciones =0;
+    static float gastosdeoperacion =0;
+	static float utlidadperdida_desp_operaciones =0;
     static float ingresosfinancieros =0;
     static float gastosfinancieros =0;
-  	//static float resultado_int_financiamiento =0;
-    //static float utilidad_antes_impuestos =0;
+  	static float resultado_int_financiamiento =0;
+    static float utilidad_antes_impuestos =0;
     static float impuestos =0;
     static float utilidad_desp_impuestos =0;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -253,9 +253,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 NULL );
             newLabel = CreateWindow(
                 TEXT("STATIC"),
-                TEXT("VENTAS. . . . . . . . . ."),
+                TEXT("VENTAS. . . . . . . . . . . . . . . ."),
                 WS_VISIBLE | WS_CHILD,
-                10, 100, 210, 20,
+                10, 100, 320, 20,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
@@ -266,12 +266,192 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 TEXT("STATIC"),
                 buffer,
                 WS_VISIBLE | WS_CHILD,
-                230, 100, 100, 20,
+                340, 100, 100, 20,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
-               NULL );	 
+               NULL );	
+			   newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("COSTO DE VENTAS. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 125, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+               sprintf(buffer, " %.2f", costodventas);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 125, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("UTILIDAD MARGINAL. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 150, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+                // Se calcula la utilidad marginal 
+                utilidadmarginal= ventas - costodventas;
+               sprintf(buffer, " %.2f", utilidadmarginal);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 150, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               // Se calculan los Gastos de Operación
+    		gastosdeoperacion = gastosdeadministracion + gastos_ventas;
                
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("GASTOS DE OPERACIÓN. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 175, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+               sprintf(buffer, " %.2f", gastosdeoperacion);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 175, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               
+            utlidadperdida_desp_operaciones = utilidadmarginal - gastosdeoperacion;
+               
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("UTILIDAD/PERDIDA DSP DE OPERACIONES. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 200, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+               sprintf(buffer, " %.2f",  utlidadperdida_desp_operaciones);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 200, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               
+               resultado_int_financiamiento = ingresosfinancieros + gastosfinancieros ;
+               
+                newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("RESULTADO INTEGRAL DE FINANCIAMIENTO. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 225, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+               sprintf(buffer, " %.2f", resultado_int_financiamiento);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 225, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               
+               utilidad_antes_impuestos = utlidadperdida_desp_operaciones + resultado_int_financiamiento ;
+                newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("UTILIDAD ANTES DE IMPUESTOS. . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 250, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+               sprintf(buffer, " %.2f", utilidad_antes_impuestos);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 250, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               
+                newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("IMPUESTOS. . . . . . . . . . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 275, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );  
+               sprintf(buffer, " %.2f", impuestos);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 275, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               
+               
+    			utilidad_desp_impuestos = utilidad_antes_impuestos - impuestos ;
+    			newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("UTILIDAD DESPUES DE IMPUESTOS. . . . . . . . . . . . . . . . ."),
+                WS_VISIBLE | WS_CHILD,
+                10, 300, 320, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );   
+               sprintf(buffer, " %.2f", utilidad_desp_impuestos);
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                buffer,
+                WS_VISIBLE | WS_CHILD,
+                340, 300, 100, 20,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+               NULL );
+               
+               newLabel = CreateWindow(
+                TEXT("STATIC"),
+                TEXT("FIRMA DEL CONTADOR ___________________________"),
+                WS_VISIBLE | WS_CHILD,
+                70, 340, 160, 42,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL );
+    
+    
 				 
             // Mostrar la nueva ventana
             ShowWindow(newHwnd, SW_SHOWDEFAULT);
