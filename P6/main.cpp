@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <string>
 
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 HWND hwnd1,newHwnd;
  static float ventas =0;
@@ -17,9 +18,13 @@ HWND hwnd1,newHwnd;
     static float utilidad_antes_impuestos =0;
     static float impuestos =0;
     static float utilidad_desp_impuestos =0;
+    char empresa ;
+    using namespace std;
+    
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc_resultados(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-HWND hwnd, resultWindow, newhwnd;
+HWND hwnd, resultWindow, newhwnd, hControl;
 int main()
 {
     
@@ -78,7 +83,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	static HWND hEdit5;
 	static HWND hEdit6;
 	static HWND hEdit7;
-
+	static HWND hEdit8;
    	static HWND hLabel;
    	
     switch (msg)
@@ -130,6 +135,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     	WS_VISIBLE | WS_CHILD,
     	10, 250, 300, 20,
     	  	hwnd, NULL, NULL, NULL);
+    	  	
+    	hLabel = CreateWindow(TEXT("STATIC"), TEXT("Ingrese el Nombre de la Empresa:"),
+    	WS_VISIBLE | WS_CHILD,
+    	10, 290, 300, 20,
+    	  	hwnd, NULL, NULL, NULL);  	
 		hEdit1 = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 30, 100, 20,
@@ -157,7 +167,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		hEdit7  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
             WS_CHILD | WS_VISIBLE | ES_NUMBER | ES_RIGHT,
             10, 270, 100, 20,
-            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);	 
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);
+		hEdit8  = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("EDIT"), TEXT(""),
+            WS_CHILD | WS_VISIBLE ,
+            10, 310, 100, 20,
+            hwnd, (HMENU)1, GetModuleHandle(NULL), NULL);	 	 
     	}
     
 	}
@@ -207,6 +221,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
              GetWindowText(hEdit7, buffer, sizeof(buffer));
             impuestos = atof(buffer);
             std::cout << "Number7: " << impuestos << std::endl;
+            GetWindowText(hEdit8, buffer, sizeof(buffer));
+            empresa = atof(buffer);
+            std::cout << "Number8: " << empresa << std::endl;
+            
+            
             //MessageBox(hwnd, TEXT("Button pressed!"), TEXT("Information"), MB_OK);
             MessageBox(hwnd, 0, TEXT("Datos Registrados"), MB_OK);
             
@@ -216,7 +235,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 TEXT("BUTTON"),
                 TEXT("Cerrar"),
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-                10, 300, 100, 30,
+                10, 400, 100, 30,
+                newHwnd,
+                NULL,
+                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+                NULL
+            );
+            
+             HWND PrintButton = CreateWindow(
+                TEXT("BUTTON"),
+                TEXT("PDF"),
+                WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+                200, 400, 100, 30,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
@@ -233,15 +263,26 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
                 NULL
             );
+            char buffer[20];
+    			sprintf(buffer, " %.2f", empresa);
             newLabel = CreateWindow(
                 TEXT("STATIC"),
-                TEXT("MIRJAM JAZMIN REYES DIAZ"),
+                buffer,
                 WS_VISIBLE | WS_CHILD,
-                80, 45, 230, 20,
+                340, 100, 100, 20,
                 newHwnd,
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
-                NULL );
+               NULL );	
+//            //newLabel = CreateWindow(
+//                TEXT("STATIC"),
+//                TEXT("MIRJAM JAZMIN REYES DIAZ"),
+//                WS_VISIBLE | WS_CHILD,
+//                80, 45, 230, 20,
+//                newHwnd,
+//                NULL,
+//                (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
+//                NULL );
 			newLabel = CreateWindow(
                 TEXT("STATIC"),
                 TEXT("01 de enero al 31 de enero de 2023"),
@@ -260,7 +301,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 NULL,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
                 NULL );   
-                char buffer[20];
+               
     			sprintf(buffer, " %.2f", ventas);
 			newLabel = CreateWindow(
                 TEXT("STATIC"),
@@ -460,9 +501,20 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			UpdateWindow(newHwnd);
 	
 		}
-		if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("Hola mundo")))
-		{
-			DestroyWindow(hwnd);DestroyWindow(hwnd1);
+//		{
+//    // Imprimir la pantalla actual en un archivo PDF
+//    ShellExecute(NULL, "printto", "MyWindowClass", "PDFCreator", NULL, 0);
+//
+//    return 0;
+//}
+		
+		if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("ESTADO DE RESULTADOS")))
+		{std::cout <<"si entro1";
+			if	 (hControl == FindWindowEx(hwnd, NULL,  TEXT("BUTTON"),
+                TEXT("Cerrar")))
+                
+				{std::cout <<"si entro2";
+				DestroyWindow(hwnd);DestroyWindow(hwnd1);}
 		}
         }
         break;
@@ -477,4 +529,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
+
+
 
