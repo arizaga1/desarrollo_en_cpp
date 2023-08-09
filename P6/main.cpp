@@ -1,7 +1,8 @@
 #include <iostream>
 #include <windows.h>
 #include <string>
-
+const int closeButtonId = 1001; // Custom button ID
+const int PDFButtonId   = 1002; // Custom button ID
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 HWND hwnd1,newHwnd;
@@ -237,7 +238,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
                 10, 400, 100, 30,
                 newHwnd,
-                NULL,
+                (HMENU)closeButtonId,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
                 NULL
             );
@@ -248,7 +249,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
                 200, 400, 100, 30,
                 newHwnd,
-                NULL,
+                (HMENU)PDFButtonId,
                 (HINSTANCE)GetWindowLongPtr(newHwnd, GWLP_HINSTANCE),
                 NULL
             );
@@ -510,9 +511,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		
 		if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("ESTADO DE RESULTADOS")))
 		{std::cout <<"si entro1";
-			if	 (hControl == FindWindowEx(hwnd, NULL,  TEXT("BUTTON"),
-                TEXT("Cerrar")))
-                
+			if (LOWORD(wParam) == closeButtonId)
+                	
 				{std::cout <<"si entro2";
 				DestroyWindow(hwnd);DestroyWindow(hwnd1);}
 		}
