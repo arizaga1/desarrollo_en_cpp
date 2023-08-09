@@ -511,10 +511,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		
 		if (hwnd == FindWindow(TEXT("MyWindowClass"), TEXT("ESTADO DE RESULTADOS")))
 		{std::cout <<"si entro1";
-			if (LOWORD(wParam) == closeButtonId)
-                	
-				{std::cout <<"si entro2";
-				DestroyWindow(hwnd);DestroyWindow(hwnd1);}
+			if (LOWORD(wParam) == closeButtonId) 	
+				{
+				std::cout <<"si entro2";
+				DestroyWindow(hwnd);DestroyWindow(hwnd1);
+				}
 		}
         }
         break;
